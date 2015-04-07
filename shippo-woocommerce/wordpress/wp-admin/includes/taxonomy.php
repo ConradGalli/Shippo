@@ -11,17 +11,14 @@
 //
 
 /**
- * Check whether a category exists.
+ * {@internal Missing Short Description}}
  *
  * @since 2.0.0
  *
- * @see term_exists()
- *
- * @param int|string $cat_name Category name.
- * @param int        $parent   Optional. ID of parent term.
- * @return mixed
+ * @param unknown_type $cat_name
+ * @return unknown
  */
-function category_exists( $cat_name, $parent = null ) {
+function category_exists($cat_name, $parent = 0) {
 	$id = term_exists($cat_name, 'category', $parent);
 	if ( is_array($id) )
 		$id = $id['term_id'];
@@ -33,8 +30,8 @@ function category_exists( $cat_name, $parent = null ) {
  *
  * @since 2.0.0
  *
- * @param int $id
- * @return object
+ * @param unknown_type $id
+ * @return unknown
  */
 function get_category_to_edit( $id ) {
 	$category = get_term( $id, 'category', OBJECT, 'edit' );
@@ -47,9 +44,9 @@ function get_category_to_edit( $id ) {
  *
  * @since 2.0.0
  *
- * @param int|string $cat_name
- * @param int        $parent
- * @return int|WP_Error
+ * @param unknown_type $cat_name
+ * @param unknown_type $parent
+ * @return unknown
  */
 function wp_create_category( $cat_name, $parent = 0 ) {
 	if ( $id = category_exists($cat_name, $parent) )
@@ -193,8 +190,8 @@ function wp_update_category($catarr) {
  *
  * @since 2.3.0
  *
- * @param int|string $tag_name
- * @return mixed
+ * @param unknown_type $tag_name
+ * @return unknown
  */
 function tag_exists($tag_name) {
 	return term_exists($tag_name, 'post_tag');
@@ -205,8 +202,8 @@ function tag_exists($tag_name) {
  *
  * @since 2.3.0
  *
- * @param int|string $tag_name
- * @return array|WP_Error
+ * @param unknown_type $tag_name
+ * @return unknown
  */
 function wp_create_tag($tag_name) {
 	return wp_create_term( $tag_name, 'post_tag');
@@ -217,8 +214,8 @@ function wp_create_tag($tag_name) {
  *
  * @since 2.3.0
  *
- * @param int $post_id
- * @return string|bool|WP_Error
+ * @param unknown_type $post_id
+ * @return unknown
  */
 function get_tags_to_edit( $post_id, $taxonomy = 'post_tag' ) {
 	return get_terms_to_edit( $post_id, $taxonomy);
@@ -229,8 +226,8 @@ function get_tags_to_edit( $post_id, $taxonomy = 'post_tag' ) {
  *
  * @since 2.8.0
  *
- * @param int $post_id
- * @return string|bool|WP_Error
+ * @param unknown_type $post_id
+ * @return unknown
  */
 function get_terms_to_edit( $post_id, $taxonomy = 'post_tag' ) {
 	$post_id = (int) $post_id;
@@ -276,8 +273,8 @@ function get_terms_to_edit( $post_id, $taxonomy = 'post_tag' ) {
  *
  * @since 2.8.0
  *
- * @param int|string $tag_name
- * @return array|WP_Error
+ * @param unknown_type $tag_name
+ * @return unknown
  */
 function wp_create_term($tag_name, $taxonomy = 'post_tag') {
 	if ( $id = term_exists($tag_name, $taxonomy) )

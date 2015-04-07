@@ -10,9 +10,6 @@
 /** Load WordPress Administration Bootstrap */
 require_once( dirname( __FILE__ ) . '/admin.php' );
 
-/** WordPress Translation Install API */
-require_once( ABSPATH . 'wp-admin/includes/translation-install.php' );
-
 if ( ! is_multisite() )
 	wp_die( __( 'Multisite support is not enabled.' ) );
 
@@ -21,29 +18,6 @@ if ( ! current_user_can( 'manage_network_options' ) )
 
 $title = __( 'Network Settings' );
 $parent_file = 'settings.php';
-
-/**
- * Print JavaScript in the header on the Network Settings screen.
- *
- * @since 4.1.0
-*/
-function network_settings_add_js() {
-?>
-<script type="text/javascript">
-jQuery(document).ready( function($) {
-	var languageSelect = $( '#WPLANG' );
-	$( 'form' ).submit( function() {
-		// Don't show a spinner for English and installed languages,
-		// as there is nothing to download.
-		if ( ! languageSelect.find( 'option:selected' ).data( 'installed' ) ) {
-			$( '#submit', this ).after( '<span class="spinner language-install-spinner" />' );
-		}
-	});
-});
-</script>
-<?php
-}
-add_action( 'admin_head', 'network_settings_add_js' );
 
 get_current_screen()->add_help_tab( array(
 		'id'      => 'overview',
@@ -54,7 +28,6 @@ get_current_screen()->add_help_tab( array(
 			'<p>' . __('Registration settings can disable/enable public signups. If you let others sign up for a site, install spam plugins. Spaces, not commas, should separate names banned as sites for this network.') . '</p>' .
 			'<p>' . __('New site settings are defaults applied when a new site is created in the network. These include welcome email for when a new site or user account is registered, and what&#8127;s put in the first post, page, comment, comment author, and comment URL.') . '</p>' .
 			'<p>' . __('Upload settings control the size of the uploaded files and the amount of available upload space for each site. You can change the default value for specific sites when you edit a particular site. Allowed file types are also listed (space separated only).') . '</p>' .
-			'<p>' . __( 'You can set the language, and the translation files will be automatically downloaded and installed (available if your filesystem is writable).' ) . '</p>' .
 			'<p>' . __('Menu setting enables/disables the plugin menus from appearing for non super admins, so that only super admins, not site admins, have access to activate plugins.') . '</p>' .
 			'<p>' . __('Super admins can no longer be added on the Options screen. You must now go to the list of existing users on Network Admin > Users and click on Username or the Edit action link below that name. This goes to an Edit User page where you can check a box to grant super admin privileges.') . '</p>'
 ) );
@@ -84,14 +57,6 @@ if ( $_POST ) {
 		'welcome_email', 'welcome_user_email', 'fileupload_maxk', 'global_terms_enabled',
 		'illegal_names', 'limited_email_domains', 'banned_email_domains', 'WPLANG', 'admin_email',
 	);
-
-	// Handle translation install.
-	if ( ! empty( $_POST['WPLANG'] ) && wp_can_install_language_pack() ) {  // @todo: Skip if already installed
-		$language = wp_download_language_pack( $_POST['WPLANG'] );
-		if ( $language ) {
-			$_POST['WPLANG'] = $language;
-		}
-	}
 
 	foreach ( $options as $option_name ) {
 		if ( ! isset($_POST[$option_name]) )
@@ -299,7 +264,7 @@ if ( isset( $_GET['updated'] ) ) {
 
 			<tr>
 				<th scope="row"><label for="upload_filetypes"><?php _e( 'Upload file types' ) ?></label></th>
-				<td><input name="upload_filetypes" type="text" id="upload_filetypes" class="large-text" value="<?php echo esc_attr( get_site_option( 'upload_filetypes', 'jpg jpeg png gif' ) ) ?>" size="45" /></td>
+				<td><input name="upload_filetypes" type="text" id="upload_filetypes" class="large-text" value="<?php echo esc_attr( get_site_option('upload_filetypes', 'jpg jpeg png gif') ) ?>" size="45" /></td>
 			</tr>
 
 			<tr>
@@ -310,8 +275,7 @@ if ( isset( $_GET['updated'] ) ) {
 
 		<?php
 		$languages = get_available_languages();
-		$translations = wp_get_available_translations();
-		if ( ! empty( $languages ) || ! empty( $translations ) ) {
+		if ( ! empty( $languages ) ) {
 			?>
 			<h3><?php _e( 'Language Settings' ); ?></h3>
 			<table class="form-table">
@@ -325,12 +289,10 @@ if ( isset( $_GET['updated'] ) ) {
 						}
 
 						wp_dropdown_languages( array(
-							'name'         => 'WPLANG',
-							'id'           => 'WPLANG',
-							'selected'     => $lang,
-							'languages'    => $languages,
-							'translations' => $translations,
-							'show_available_translations' => wp_can_install_language_pack(),
+							'name'      => 'WPLANG',
+							'id'        => 'WPLANG',
+							'selected'  => $lang,
+							'languages' => $languages,
 						) );
 						?>
 					</td>

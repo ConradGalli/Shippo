@@ -142,11 +142,6 @@ class WP_MS_Themes_List_Table extends WP_List_Table {
 		) );
 	}
 
-	/**
-	 * @staticvar string $term
-	 * @param WP_Theme $theme
-	 * @return bool
-	 */
 	public function _search_callback( $theme ) {
 		static $term;
 		if ( is_null( $term ) )
@@ -168,13 +163,6 @@ class WP_MS_Themes_List_Table extends WP_List_Table {
 	}
 
 	// Not used by any core columns.
-	/**
-	 * @global string $orderby
-	 * @global string $order
-	 * @param array $theme_a
-	 * @param array $theme_b
-	 * @return int
-	 */
 	public function _order_callback( $theme_a, $theme_b ) {
 		global $orderby, $order;
 
@@ -278,13 +266,6 @@ class WP_MS_Themes_List_Table extends WP_List_Table {
 			$this->single_row( $theme );
 	}
 
-	/**
-	 * @global string $status
-	 * @global int $page
-	 * @global string $s
-	 * @global array $totals
-	 * @param WP_Theme $theme
-	 */
 	public function single_row( $theme ) {
 		global $status, $page, $s, $totals;
 
@@ -350,7 +331,7 @@ class WP_MS_Themes_List_Table extends WP_List_Table {
 		 * Filter the action links of a specific theme in the Multisite themes
 		 * list table.
 		 *
-		 * The dynamic portion of the hook name, `$stylesheet`, refers to the
+		 * The dynamic portion of the hook name, $stylesheet, refers to the
 		 * directory name of the theme, which in most cases is synonymous
 		 * with the template name.
 		 *
@@ -463,7 +444,7 @@ class WP_MS_Themes_List_Table extends WP_List_Table {
 		/**
 		 * Fires after each specific row in the Multisite themes list table.
 		 *
-		 * The dynamic portion of the hook name, `$stylesheet`, refers to the
+		 * The dynamic portion of the hook name, $stylesheet, refers to the
 		 * directory name of the theme, most often synonymous with the template
 		 * name of the theme.
 		 *

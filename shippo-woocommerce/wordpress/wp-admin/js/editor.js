@@ -76,7 +76,6 @@ window.switchEditors = {
 
 			DOM.removeClass( wrap_id, 'html-active' );
 			DOM.addClass( wrap_id, 'tmce-active' );
-			DOM.setAttrib( txtarea_el, 'aria-hidden', true );
 			setUserSetting( 'editor', 'tinymce' );
 
 		} else if ( 'html' === mode ) {
@@ -113,7 +112,6 @@ window.switchEditors = {
 
 			DOM.removeClass( wrap_id, 'tmce-active' );
 			DOM.addClass( wrap_id, 'html-active' );
-			DOM.setAttrib( txtarea_el, 'aria-hidden', false );
 			setUserSetting( 'editor', 'html' );
 		}
 		return false;
